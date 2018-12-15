@@ -18,7 +18,7 @@ import java.util.Vector;
 public class ArithmeticFormule extends Arithmetic{
 	
 	private Vector<Object> formule=new Vector<Object>();
-	private FormuleCalculator calculator;
+	private FormuleCalculator calculator=new FormuleCalculator();;
 	
 	public ArithmeticFormule(Collection <Object> formule) {
 		setFormule(formule);
@@ -34,13 +34,7 @@ public class ArithmeticFormule extends Arithmetic{
 	
 	public void setFormule(Collection <Object> formule) {
 		this.formule.clear();
-		for(Object ob : formule) {
-			if(ob instanceof Integer||ob instanceof Long) {
-				this.formule.add(toDouble(ob));
-			}else {
-				this.formule.add(ob);
-			}
-		}
+		this.formule.addAll(standardizeFormuleNum(formule));
 	}
 	
 	/**
@@ -413,12 +407,19 @@ public class ArithmeticFormule extends Arithmetic{
 							result.addAll(formule.subList(0,parenthes[0]+1));
 							result.addAll(addParenthesNoP(sub));
 							result.addAll(formule.subList(parenthes[1],count));
-							return restoreParentheses(result);
+							Vector<Object> check=restoreParentheses(result);
+							if(Double.isFinite(calculator.calculateFormula(check))) {
+								return check;
+							}
+							
 						}
 					}else {
 						Vector<Object> sub= replaceParentheses(formule);
 						if(isParenthesNoP(sub)) {
-							return restoreParentheses(addParenthesNoP((Vector<Object>) sub));
+							Vector<Object> check=restoreParentheses(addParenthesNoP(sub));
+							if(Double.isFinite(calculator.calculateFormula(check))) {
+								return check;
+							}
 						}
 					}
 				}				
@@ -476,13 +477,8 @@ public class ArithmeticFormule extends Arithmetic{
 	 * 判断算式是否合法 含括号判断
 	 * */
 	public boolean isFormuleCorrect() {
-		calculator=new FormuleCalculator();
-		if(calculator.isParenthesesCorrect(formule)) {
-			if(calculator.isFormuleCorrect(formule)) {
-				return true;
-			}else {
-				return false;
-			}
+		if(calculator.isFormuleCorrect(formule)) {
+			return true;
 		}else {
 			return false;
 		}
@@ -523,7 +519,6 @@ public class ArithmeticFormule extends Arithmetic{
 	 * 计算算式
 	 * */
 	public double calculate() {
-		calculator=new FormuleCalculator();
 		return calculator.calculateFormula(formule);
 	}
 }

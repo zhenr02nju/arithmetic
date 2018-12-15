@@ -20,18 +20,18 @@ public class Test {
 	@org.junit.Test
 	public void test() throws ParseException {
 		Vector<Object> formule=new Vector<Object>();
+
 		
 		formule.add(5);
 		formule.add('-');
 		formule.add(6);
 		
 		formule.add('/');
-		
-		formule.add(2);
-		
+		//formule.add('(');
+		formule.add(2);		
 		formule.add('-');
 		formule.add(2);
-		
+		//formule.add(')');
 		formule.add('x');
 		formule.add(2);
 		formule.add('-');
@@ -44,11 +44,11 @@ public class Test {
 		formule.add(7);
 		
 		ArithmeticFormule arithmeticFormule=new ArithmeticFormule(formule);
-		
+		FormuleCalculator formuleCalculator=new FormuleCalculator();
 		
 		System.out.println(arithmeticFormule.print());
 		arithmeticFormule.addParentheses(5);
 		System.out.println(arithmeticFormule.print());
-		
+		System.out.println(arithmeticFormule.calculate());
 	}
 }

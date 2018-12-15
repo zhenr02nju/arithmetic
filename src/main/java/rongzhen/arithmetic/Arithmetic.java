@@ -3,6 +3,7 @@
  */
 package rongzhen.arithmetic;
 
+import java.util.Collection;
 import java.util.Vector;
 
 /**
@@ -24,6 +25,21 @@ public class Arithmetic {
 			return (Double)number;
 		}
 		return 1.0;
+	}
+	
+	/**
+	 * 转换算式的数字为double
+	 * */
+	protected Vector<Object> standardizeFormuleNum(Collection <Object> formule) {
+		Vector<Object> result=new Vector<Object>();
+		for(Object ob : formule) {
+			if(ob instanceof Integer||ob instanceof Long) {
+				result.add(toDouble(ob));
+			}else {
+				result.add(ob);
+			}
+		}
+		return result;
 	}
 	
 	/**

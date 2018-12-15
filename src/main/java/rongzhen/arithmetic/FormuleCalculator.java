@@ -22,7 +22,7 @@ public class FormuleCalculator extends Arithmetic{
 	 * 4.如果先出现右括号直接返回false
 	 * 5.如果左括号出现在最后一位，返回false
 	 * */
-	public boolean isParenthesesCorrect(Vector<Object> formule) {
+	private boolean isParenthesesCorrect(Vector<Object> formule) {
 		if(!isContainParentheses(formule)) {
 			return true;
 		}
@@ -63,8 +63,14 @@ public class FormuleCalculator extends Arithmetic{
 	 * 1.运算符在头尾的，false
 	 * 2.运算符连续出现的，false
 	 * 3.数字连续出现，false
+	 * 4.除数为0，false
 	 * */
 	public boolean isFormuleCorrect(Vector<Object> formule) {
+		if(isContainParentheses(formule)) {
+			if(!isParenthesesCorrect(formule)) {
+				return false;
+			}
+		}
 		Object head=formule.firstElement();//运算符在头的，false
 		if(head instanceof Character && isOperator((Character)head)) {
 			return false;
@@ -90,13 +96,19 @@ public class FormuleCalculator extends Arithmetic{
 				}
 			}
 		}
+		if(Double.isInfinite(calculateFormula(standardizeFormuleNum(formule)))) {
+			return false;
+		}
+		if(Double.isNaN(calculateFormula(standardizeFormuleNum(formule)))) {
+			return false;
+		}
 		return true;
 	}
 		
 	/**
 	 * 计算算式 不带括号
 	 * */
-	public double calculateNoParentheses(Vector<Object> formule) {
+	private double calculateNoParentheses(Vector<Object> formule) {
 		Vector<Object> level2formula=new Vector<Object>();//乘法除法计算后的算式
 		double result=0;
 		//计算乘法/除法
@@ -137,17 +149,18 @@ public class FormuleCalculator extends Arithmetic{
 	 * 计算算式 带括号
 	 * */
 	public double calculateFormula(Vector<Object> formule) {
+		Vector<Object> doubleFormula=standardizeFormuleNum(formule);//算式数字进行转换
 		Vector<Object> level2formula=new Vector<Object>();//括号计算后的算式		
-		if(isContainParentheses(formule)) {
+		if(isContainParentheses(doubleFormula)) {
 			Vector<Integer> LeftParenthesIndex=new Vector<Integer>();//l2算式中左括号的索引号
-			for(int i=0;i<formule.size();i++) {
+			for(int i=0;i<doubleFormula.size();i++) {
 				//System.out.println(i);
-				level2formula.add(formule.get(i));//把原算式内容加入下一步l2算式
-				if(formule.get(i) instanceof Character) {
-					if(isLeftParenthes((Character)formule.get(i))) {//如果是左括号，就记录左括号在l2算式中的index，用于删除括号中的内容，替换为计算结果
+				level2formula.add(doubleFormula.get(i));//把原算式内容加入下一步l2算式
+				if(doubleFormula.get(i) instanceof Character) {
+					if(isLeftParenthes((Character)doubleFormula.get(i))) {//如果是左括号，就记录左括号在l2算式中的index，用于删除括号中的内容，替换为计算结果
 						LeftParenthesIndex.add(level2formula.size()-1);
 					}
-					if(isRightParenthes((Character)formule.get(i))) {//如果遇到右括号，就反向查询最后一个左括号，用于配对
+					if(isRightParenthes((Character)doubleFormula.get(i))) {//如果遇到右括号，就反向查询最后一个左括号，用于配对
 						int start=LeftParenthesIndex.lastElement()+1;//最后一个左括号索引位的后一位，从这一位开始，到l2算式的最后一位，就是括号内的算式，先进行计算
 						int end=level2formula.size()-1;//l2算式的最后一位
 						LeftParenthesIndex.remove(LeftParenthesIndex.lastElement());//删除最后一个左括号的索引号
@@ -162,7 +175,7 @@ public class FormuleCalculator extends Arithmetic{
 				}				
 			}
 		}else {
-			level2formula.addAll(formule);//如果算式无括号，就直接复制给l2算式
+			level2formula.addAll(doubleFormula);//如果算式无括号，就直接复制给l2算式
 		}
 		return calculateNoParentheses(level2formula);//计算l算式
 	}
