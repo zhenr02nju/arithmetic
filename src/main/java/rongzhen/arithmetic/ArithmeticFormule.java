@@ -485,9 +485,9 @@ public class ArithmeticFormule extends Arithmetic{
 	}
 	
 	/**
-	 * 打印算式-打印参数里的算式
+	 * 显示算式-打印参数里的算式
 	 * */
-	public String print(Collection <Object> formule) {
+	public String show(Collection <Object> formule) {
 		StringBuffer sf=new StringBuffer();
 		for(Object ob : formule) {
 			if(ob instanceof Double) {
@@ -509,10 +509,10 @@ public class ArithmeticFormule extends Arithmetic{
 	}
 	
 	/**
-	 * 打印算式-self
+	 * 显示算式-self
 	 * */
-	public String print() {
-		return print(formule);
+	public String show() {
+		return show(formule);
 	}
 	
 	/**
