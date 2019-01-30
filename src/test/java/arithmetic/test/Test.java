@@ -30,7 +30,7 @@ public class Test {
 					Random random=new Random();
 					Vector<Object> numbers=new Vector<Object>();
 					for(int i=0;i<2;i++) {
-						numbers.add(random.nextInt(20)+1);
+						numbers.add(random.nextInt(30)+1);
 					}
 					return numbers;					
 				}
