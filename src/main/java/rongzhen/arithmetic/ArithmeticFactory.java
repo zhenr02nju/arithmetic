@@ -76,6 +76,7 @@ public abstract  class ArithmeticFactory {
 				System.out.print('\n');
 				System.out.print('\n');
 				System.out.print('\n');
+				System.out.print('\n');
 			}
 			i++;
 		}

@@ -30,7 +30,7 @@ public class Test {
 					Random random=new Random();
 					Vector<Object> numbers=new Vector<Object>();
 					for(int i=0;i<2;i++) {
-						numbers.add(random.nextInt(30)+1);
+						numbers.add(random.nextInt(99)+1);
 					}
 					return numbers;					
 				}
@@ -44,7 +44,7 @@ public class Test {
 				}
 			}.buildFormule(0);
 			//这里可以添加对算式的结果要求
-			if(formule.calculate()>0) {
+			if(formule.calculate()>0&&formule.calculate()<100) {
 				list.add(formule);
 			}
 		}
