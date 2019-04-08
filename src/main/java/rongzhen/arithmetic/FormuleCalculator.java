@@ -116,10 +116,10 @@ public class FormuleCalculator extends Arithmetic{
 			if(formule.get(i) instanceof Character&&i>0) {//判断是否为运算符
 				if(islevel1_Operator((Character)formule.get(i))) {//判断是否为1级运算符
 					if((Character)formule.get(i)=='*') {//乘法
-						double temp=mul((double)level2formula.lastElement(),(double)formule.get(++i));
+						double temp=mul((Double)level2formula.lastElement(),(Double)formule.get(++i));
 						level2formula.set(level2formula.size()-1, temp);
 					}else {//除法
-						double temp=div((double)level2formula.lastElement(),(double)formule.get(++i));
+						double temp=div((Double)level2formula.lastElement(),(Double)formule.get(++i));
 						level2formula.set(level2formula.size()-1, temp);
 					}
 				}else {//不是1级运算符就放入下一步算式
@@ -133,14 +133,14 @@ public class FormuleCalculator extends Arithmetic{
 		for(int j=0;j<level2formula.size();j++) {
 			if(level2formula.get(j) instanceof Character&&j>0) {//判断是否为运算符
 				if((Character)level2formula.get(j)=='+') {//加法
-					double temp=add(result,(double)level2formula.get(++j));
+					double temp=add(result,(Double)level2formula.get(++j));
 					result=temp;
 				}else {//减法
-					double temp=sub(result,(double)level2formula.get(++j));
+					double temp=sub(result,(Double)level2formula.get(++j));
 					result=temp;
 				}
 			}else 
-				result=(double) level2formula.get(j);
+				result=(Double) level2formula.get(j);
 		}
 		return result;
 	}
