@@ -21,34 +21,41 @@ public class Test {
 	@org.junit.Test
 	public void test() throws ParseException {
 		HashSet<ArithmeticFormule> list=new HashSet<ArithmeticFormule>();
-		int count=72;//算式数量
-		while(list.size()<count) {
+		HashSet<String> non_coincidence=new HashSet<String>();
+		int count=10000;//算式数量
+		while(count>0) {
 			ArithmeticFormule formule=
 			new ArithmeticFactory() {
 				//数字
 				protected Vector<Object> buildNumbers(){
 					Random random=new Random();
 					Vector<Object> numbers=new Vector<Object>();
+					
 					for(int i=0;i<2;i++) {
-						numbers.add(random.nextInt(99)+1);
+						numbers.add(random.nextInt(100)+1);
 					}
-					return numbers;					
+					
+					return numbers;
 				}
 				//符号
 				protected Vector<Object> buildOperator(){
 					Random random=new Random();
 					Character[] operators= {'+','-'};
 					Vector<Object> operator=new Vector<Object>();
-					operator.add(operators[random.nextInt(2)]);
+					operator.add(operators[random.nextInt(operators.length)]);
 					return operator;
 				}
 			}.buildFormule(0);
 			//这里可以添加对算式的结果要求
-			if(formule.calculate()>0&&formule.calculate()<100) {
-				list.add(formule);
+			if(formule.calculate()>0&&formule.calculate()<=100) {
+				if(!non_coincidence.contains(formule.show())) {
+					list.add(formule);
+					non_coincidence.add(formule.show());
+				}
 			}
+			count--;
 		}
 		//打印
-		ArithmeticFactory.print(list, 15);		
+		ArithmeticFactory.print(list, 10, 5,false);
 	}
 }

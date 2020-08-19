@@ -3,6 +3,7 @@
  */
 package rongzhen.arithmetic;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
@@ -37,14 +38,19 @@ public abstract  class ArithmeticFactory {
 	
 	/**
 	 * 打印算式组，排版
-	 * @param width算式加空格的宽度
+	 * @param width 算式加空格的宽度
+	 * @param num 一行几个算式
+	 * @param withAnswer 是否打印答案
 	 * */
-	public static void print(Set<ArithmeticFormule> list,int width) {
+	public static void print(Set<ArithmeticFormule> list,int width,int num,boolean withAnswer) {
 		Iterator<ArithmeticFormule> iterator=list.iterator();
+		ArrayList<String> answers=new ArrayList<String>();
+		FormuleCalculator calculator=new FormuleCalculator();
 		int i=1;
 		while(iterator.hasNext()) {
 			ArithmeticFormule formule=iterator.next();			
 			String temp=formule.show();
+			answers.add(temp+calculator.calculateFormula(formule.getFormule()));//计算结果
 			//添加间距空格
 			char[] temparry=temp.toCharArray();
 			for(int j=0;j<width;j++) {
@@ -71,14 +77,18 @@ public abstract  class ArithmeticFactory {
 					System.out.print(" ");
 				}
 			}
-			if(i%3==0) {//一行几个算式
-				System.out.print('\n');
-				System.out.print('\n');
-				System.out.print('\n');
-				System.out.print('\n');
+			if(i%num==0) {//一行几个算式
 				System.out.print('\n');
 			}
 			i++;
+		}
+		//打印答案
+		if(withAnswer) {
+			Iterator<String> iterator2=answers.iterator();
+			while(iterator2.hasNext()) {
+				String answer=iterator2.next();
+				System.out.println(answer);
+			}
 		}
 	}
 }
