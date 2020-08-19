@@ -40,7 +40,7 @@ public class Test {
 				//符号
 				protected Vector<Object> buildOperator(){
 					Random random=new Random();
-					Character[] operators= {'+','-'};
+					Character[] operators= {'*'};
 					Vector<Object> operator=new Vector<Object>();
 					operator.add(operators[random.nextInt(operators.length)]);
 					return operator;
